@@ -21,18 +21,26 @@ function findById(id) {
     .first(); // first id that it matches return that single object not an array with that object inside of the array.
 }
 
-function findSteps() {
-  return;
+function findSteps(id) {
+  return db('steps as st')
+    .join('schemes as sc', 'st.scheme_id', 'sc.id')
+    .select('st.id', 'sc.scheme_name', 'st.step_number', 'st.instructions')
+    .orderBy('st.step_number')
+    .where({ 'st.scheme_id': id });
 }
 
-function add(params) {
-  return;
+function add(scheme) {
+  return db('schemes').insert(scheme, 'id');
 }
 
-function update(params) {
-  return;
+function update(changes, id) {
+  return db('schemes')
+    .update('scheme_name', changes.scheme_name)
+    .where({ id });
 }
 
-function remove(params) {
-  return;
+function remove(id) {
+  return db('schemes')
+    .del()
+    .where({ id });
 }
